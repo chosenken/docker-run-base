@@ -30,10 +30,13 @@ mv /opt/modulus/bin/navi* /opt/modulus/bin/navi
 chmod +x /etc/service/supervisor/run
 chmod +x /opt/modulus/bin/navi
 
+# Set the number of processors so we can use them when compiling
+export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
+
 # Install ImageMagick
 cd /opt
 wget http://www.imagemagick.org/download/ImageMagick.tar.gz
-tar -xf ImageMagick.tar.gz && mv ImageMagick-* ImageMagick && cd ImageMagick && ./configure && make -j 8 && sudo make install
+tar -xf ImageMagick.tar.gz && mv ImageMagick-* ImageMagick && cd ImageMagick && ./configure && make && sudo make install
 ldconfig /usr/local/lib && rm -rf /opt/ImageMagick*
 
 # Install GraphicsMagick
@@ -41,7 +44,7 @@ cd /opt
 wget http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/1.3.21/GraphicsMagick-1.3.21.tar.gz
 tar -xf GraphicsMagick-*
 cd GraphicsMagick-*
-./configure && make -j 8 && make install
+./configure && make && make install
 cd /opt && rm -rf cd GraphicsMagick-*
 
 # Install ffmpeg
